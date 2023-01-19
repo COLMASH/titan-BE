@@ -11,15 +11,9 @@ async function handler(event) {
     try {
         const result = await parser(event)
         const files = result.files
-        const stage = process.env.STAGE
 
         if (_.isEmpty(files) || _.isNil(files)) {
             return badRequest
-        }
-
-        let folder = 'test'
-        if (stage === 'production') {
-            folder = 'production'
         }
 
         let s3Files = []
@@ -30,8 +24,8 @@ async function handler(event) {
 
             const fileUploaded = await s3
                 .upload({
-                    Bucket: 'savesolar-bills-uploaded',
-                    Key: `${folder}/${uuidv4()}${extension}`,
+                    Bucket: 'titan-intake-upload-pdf-challenge',
+                    Key: `pdf/${uuidv4()}${extension}`,
                     Body: content,
                     ContentType: contentType
                 })
