@@ -1,4 +1,4 @@
-service: titan-be
+service: titan-BE
 
 provider:
   name: aws
