@@ -3,9 +3,11 @@ service: titan-BE
 provider:
   name: aws
   runtime: nodejs12.x
-  stage: dev
+  stage: prod
   region: us-east-1
 
 functions:
-  hello:
+  titan:
     handler: src/handler.titanLogic
+    timeout: 60 # seconds
+    memorySize: 128 # mb
