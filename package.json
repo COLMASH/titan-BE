@@ -12,7 +12,9 @@
     "aws-sdk": "^2.1297.0",
     "busboy": "^1.6.0",
     "lodash": "^4.17.21",
-    "serverless-iam-roles-per-function": "^3.2.0",
     "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "serverless-iam-roles-per-function": "^3.2.0"
   }
 }
