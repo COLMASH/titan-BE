@@ -6,12 +6,10 @@ provider:
   stage: prod
   region: us-east-1
 
-functions:
-  titan:
-    handler: src/handler.titanLogic
-    timeout: 60 # seconds
-    memorySize: 128 # mb
+plugins:
+  - serverless-iam-roles-per-function
 
+functions:
   post-upload-pdf:
     handler: src/post-upload-pdf/index.handler
     iamRoleStatementsInherit: true
@@ -24,8 +22,8 @@ functions:
 
     events:
       - http:
-          path: upload-pdf
-          method: post
+          path: /upload-pdf
+          method: POST
           cors: true
 
     package:
