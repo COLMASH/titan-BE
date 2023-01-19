@@ -19,6 +19,7 @@ async function handler(event) {
         let s3Files = []
         for (let file of files) {
             const {contentType, content} = file
+            console.log('contentType2', contentType)
 
             const extension = contentType.substring(contentType.indexOf('/')).replace('/', '.')
 

@@ -3,6 +3,7 @@ const busboy = require('busboy')
 const parser = (event) =>
     new Promise((resolve) => {
         var contentType = event.headers['Content-Type'] || event.headers['content-type']
+        console.log('contentType', contentType)
         var bb = busboy({headers: {'content-type': contentType}})
 
         const result = {
@@ -11,6 +12,8 @@ const parser = (event) =>
 
         bb.on('file', function (fieldname, file, file_data) {
             const {mimeType, encoding, filename} = file_data
+            console.log('mimeType', mimeType)
+            console.log('filename', filename)
 
             const uploadFile = {}
 
