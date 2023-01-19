@@ -11,3 +11,23 @@ functions:
     handler: src/handler.titanLogic
     timeout: 60 # seconds
     memorySize: 128 # mb
+
+  post-upload-pdf:
+    handler: src/post-upload-pdf/index.handler
+    iamRoleStatementsInherit: true
+    iamRoleStatementsName: post-upload-pdf-role-${self:provider.stage}
+    iamRoleStatements:
+      - Effect: 'Allow'
+        Action:
+          - s3:PutObject
+        Resource: arn:aws:s3:::titan-intake-upload-pdf-challenge/*
+
+    events:
+      - http:
+          path: upload-pdf
+          method: post
+          cors: true
+
+    package:
+      include:
+        - src/post-upload-pdf/index.js
