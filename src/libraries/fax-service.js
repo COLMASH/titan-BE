@@ -33,10 +33,11 @@ const callEtherFaxService = async (faxNumber, pdfFile) => {
     await axios
         .request(options)
         .then(function (response) {
-            console.log(response.data)
+            console.log('Fax response:', response.data)
         })
         .catch(function (error) {
             console.error(error)
+            throw new Error(error)
         })
 }
 
