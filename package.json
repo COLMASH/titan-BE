@@ -9,6 +9,7 @@
   "author": "mash",
   "license": "ISC",
   "dependencies": {
+    "api": "^5.0.6",
     "aws-sdk": "^2.1297.0",
     "busboy": "^1.6.0",
     "lodash": "^4.17.21",

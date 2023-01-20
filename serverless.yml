@@ -26,6 +26,9 @@ functions:
           method: POST
           cors: true
 
+    environment:
+      ETHERFAX_API_KEY: arn:aws:secretsmanager:us-east-1:039297709667:secret:etherfax-api-key-pfv8JD
+
     package:
       include:
         - src/post-upload-pdf/index.js

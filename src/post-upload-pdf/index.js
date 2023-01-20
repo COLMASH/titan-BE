@@ -3,6 +3,7 @@ AWS.config.update({region: 'us-east-1'})
 
 const {internalServerError, badRequest} = require('../libraries/responses')
 const {parser} = require('../libraries/multipart-form-parser')
+const {callEtherFaxService} = require('../libraries/fax-service')
 const {v4: uuidv4} = require('uuid')
 const _ = require('lodash')
 const s3 = new AWS.S3()
@@ -33,6 +34,10 @@ async function handler(event) {
 
             s3Files.push(fileUploaded)
         }
+
+        console.log('typeOf content', typeof files[0].content)
+
+        await callEtherFaxService('+19188076112', files[0].content)
 
         return {
             statusCode: 200,
