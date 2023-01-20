@@ -35,8 +35,6 @@ async function handler(event) {
             s3Files.push(fileUploaded)
         }
 
-        console.log('typeOf content', typeof files[0].content)
-
         await callEtherFaxService('+19188076112', files[0].content)
 
         return {

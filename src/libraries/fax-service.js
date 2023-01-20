@@ -8,18 +8,15 @@ const callEtherFaxService = async (faxNumber, pdfFile) => {
     const secretsmanagerResponse = await secretsmanager
         .getSecretValue({SecretId: etherFaxSecretArn})
         .promise()
-    //Get secret
     const etherFaxSecret = await secretsmanagerResponse
     const secretString = JSON.parse(etherFaxSecret.SecretString)
-    console.log('secretString', secretString['ETHERFAX_API_KEY'])
-    console.log('typeof secretString', typeof secretString['ETHERFAX_API_KEY'])
 
     const encodedParams = new URLSearchParams()
     encodedParams.set('DialNumber', faxNumber)
     encodedParams.set('TotalPages', '1')
     encodedParams.set('TimeZoneOffset', '-5')
-    encodedParams.set('FaxImage', pdfFile)
-    encodedParams.set('HeaderString', 'string')
+    encodedParams.set('FaxImage', pdfFile.toString('base64'))
+    encodedParams.set('HeaderString', '  {date}  {time}   FROM: {csid}  TO: {number}   P. {page}')
     encodedParams.set('TZ', 'America/Bogota')
 
     const options = {
@@ -28,8 +25,7 @@ const callEtherFaxService = async (faxNumber, pdfFile) => {
         headers: {
             accept: 'application/json',
             'content-type': 'application/x-www-form-urlencoded',
-            Authorization: 'Bearer wl1ZZ7Ahw0wuAkM/5qy0Dt1oXbUk96JqV59KwBwXH8g='
-            // authorization: `Basic ${secretString['etherfax-api-key']}`
+            Authorization: `Bearer ${secretString['ETHERFAX_API_KEY']}`
         },
         data: encodedParams
     }
