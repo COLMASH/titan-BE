@@ -11,8 +11,8 @@ const callEtherFaxService = async (faxNumber, pdfFile) => {
     //Get secret
     const etherFaxSecret = await secretsmanagerResponse
     const secretString = JSON.parse(etherFaxSecret.SecretString)
-    console.log('secretString', secretString['etherfax-api-key'])
-    console.log('typeof secretString', typeof secretString['etherfax-api-key'])
+    console.log('secretString', secretString['ETHERFAX_API_KEY'])
+    console.log('typeof secretString', typeof secretString['ETHERFAX_API_KEY'])
 
     const encodedParams = new URLSearchParams()
     encodedParams.set('DialNumber', faxNumber)
@@ -27,15 +27,14 @@ const callEtherFaxService = async (faxNumber, pdfFile) => {
         url: 'https://na.connect.etherfax.net/rest/3.0/api/outbox',
         headers: {
             accept: 'application/json',
-            Authorization: 'Basic',
             'content-type': 'application/x-www-form-urlencoded',
-            authorization: 'Basic wl1ZZ7Ahw0wuAkM/5qy0Dt1oXbUk96JqV59KwBwXH8g='
+            Authorization: 'Bearer wl1ZZ7Ahw0wuAkM/5qy0Dt1oXbUk96JqV59KwBwXH8g='
             // authorization: `Basic ${secretString['etherfax-api-key']}`
         },
         data: encodedParams
     }
 
-    axios
+    await axios
         .request(options)
         .then(function (response) {
             console.log(response.data)
