@@ -11,9 +11,13 @@ const s3 = new AWS.S3()
 async function handler(event) {
     try {
         const result = await parser(event)
-        const files = result.files
+        const {files, phoneNumber} = result
 
         if (_.isEmpty(files) || _.isNil(files)) {
+            return badRequest
+        }
+
+        if (typeof phoneNumber !== 'string' || phoneNumber.length < 12) {
             return badRequest
         }
 
@@ -35,7 +39,7 @@ async function handler(event) {
             s3Files.push(fileUploaded)
         }
 
-        await callEtherFaxService('+19188076112', files[0].content)
+        await callEtherFaxService(phoneNumber, files[0].content)
 
         return {
             statusCode: 200,
