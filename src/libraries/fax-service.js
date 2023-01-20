@@ -1,4 +1,4 @@
-const sdk = require('api')('@etherfax-api/v3.0#1mld74kq6vbiyl')
+const axios = require('axios')
 const AWS = require('aws-sdk')
 const secretsmanager = new AWS.SecretsManager()
 AWS.config.update({region: `${process.env.AWS_REGION}`})
@@ -13,24 +13,36 @@ const callEtherFaxService = async (faxNumber, pdfFile) => {
     const secretString = JSON.parse(etherFaxSecret.SecretString)
     console.log('secretString', secretString['etherfax-api-key'])
     console.log('typeof secretString', typeof secretString['etherfax-api-key'])
-    // sdk.auth(secretString['etherfax-api-key'])
-    sdk.auth('wl1ZZ7Ahw0wuAkM/5qy0Dt1oXbUk96JqV59KwBwXH8g=')
-    sdk.outbox(
-        {
-            DialNumber: faxNumber,
-            LocalId: '',
-            CallerId: '',
-            TotalPages: 1,
-            TimeZoneOffset: '-5',
-            Tag: 'string',
-            FaxImage: pdfFile,
-            HeaderString: 'string',
-            TZ: 'America/Bogota'
+
+    const encodedParams = new URLSearchParams()
+    encodedParams.set('DialNumber', faxNumber)
+    encodedParams.set('TotalPages', '1')
+    encodedParams.set('TimeZoneOffset', '-5')
+    encodedParams.set('FaxImage', pdfFile)
+    encodedParams.set('HeaderString', 'string')
+    encodedParams.set('TZ', 'America/Bogota')
+
+    const options = {
+        method: 'POST',
+        url: 'https://na.connect.etherfax.net/rest/3.0/api/outbox',
+        headers: {
+            accept: 'application/json',
+            Authorization: 'Basic',
+            'content-type': 'application/x-www-form-urlencoded',
+            authorization: 'Basic wl1ZZ7Ahw0wuAkM/5qy0Dt1oXbUk96JqV59KwBwXH8g='
+            // authorization: `Basic ${secretString['etherfax-api-key']}`
         },
-        {accept: 'application/json'}
-    )
-        .then(({data}) => console.log(data))
-        .catch((err) => console.error(err))
+        data: encodedParams
+    }
+
+    axios
+        .request(options)
+        .then(function (response) {
+            console.log(response.data)
+        })
+        .catch(function (error) {
+            console.error(error)
+        })
 }
 
 module.exports = {
