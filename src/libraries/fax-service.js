@@ -13,7 +13,6 @@ const callEtherFaxService = async (faxNumber, pdfFile) => {
 
     const encodedParams = new URLSearchParams()
     encodedParams.set('DialNumber', faxNumber)
-    encodedParams.set('LocalId', 'MiguelSantana')
     encodedParams.set('TotalPages', '1')
     encodedParams.set('TimeZoneOffset', '-5')
     encodedParams.set('FaxImage', pdfFile.toString('base64'))
