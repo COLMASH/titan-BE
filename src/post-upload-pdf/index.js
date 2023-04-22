@@ -1,12 +1,11 @@
 const AWS = require('aws-sdk')
 AWS.config.update({region: 'us-east-1'})
 
-const {internalServerError, badRequest} = require('../libraries/responses')
-const {parser} = require('../libraries/multipart-form-parser')
-const {callEtherFaxService} = require('../libraries/fax-service')
-const {v4: uuidv4} = require('uuid')
+const {internalServerError, badRequest} = require('../utils/responses')
+const {parser} = require('../utils/parser')
+const {callEtherFaxService} = require('../utils/callEtherFaxService')
+const {s3FileUpload} = require('../utils/s3FileUpload')
 const _ = require('lodash')
-const s3 = new AWS.S3()
 
 async function handler(event) {
     try {
@@ -21,24 +20,7 @@ async function handler(event) {
             return badRequest
         }
 
-        let s3Files = []
-        for (let file of files) {
-            const {contentType, content} = file
-
-            const extension = contentType.substring(contentType.indexOf('/')).replace('/', '.')
-
-            const fileUploaded = await s3
-                .upload({
-                    Bucket: 'titan-intake-upload-pdf-challenge',
-                    Key: `pdf/${uuidv4()}${extension}`,
-                    Body: content,
-                    ContentType: contentType
-                })
-                .promise()
-
-            s3Files.push(fileUploaded)
-        }
-
+        await s3FileUpload(files)
         await callEtherFaxService(phoneNumber, files[0].content)
 
         return {
