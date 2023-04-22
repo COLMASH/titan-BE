@@ -8,21 +8,21 @@ To use titan-BE, you will need an AWS account and the Serverless Framework insta
 
 1. Clone the repository to your local machine:
 
-### `git clone https://github.com/COLMASH/titan-BE.git`
+#### `git clone https://github.com/COLMASH/titan-BE.git`
 
 2. Install the required dependencies:
 
-### `cd titan-BE`
+#### `cd titan-BE`
 
-### `npm install`
+#### `npm install`
 
 3. Configure your AWS credentials:
 
-### `serverless config credentials --provider aws --key YOUR_AWS_ACCESS_KEY --secret YOUR_AWS_SECRET_KEY`
+#### `serverless config credentials --provider aws --key YOUR_AWS_ACCESS_KEY --secret YOUR_AWS_SECRET_KEY`
 
 4. Deploy the service to your AWS account:
 
-### `serverless deploy`
+#### `serverless deploy`
 
 5. Once the deployment is complete, you should see the URL of the API Gateway endpoint in the output of the serverless deploy command. Copy this URL and use it in your titan-FE front-end code to send faxes with PDF file content.
 
